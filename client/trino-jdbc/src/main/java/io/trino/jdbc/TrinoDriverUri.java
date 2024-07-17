@@ -39,6 +39,8 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -491,7 +493,9 @@ public final class TrinoDriverUri
     {
         for (String propertyName : connectionProperties.stringPropertyNames()) {
             if (ConnectionProperties.forKey(propertyName) == null) {
-                throw new SQLException(format("Unrecognized connection property '%s'", propertyName));
+                Logger.getLogger(TrinoDriverUri.class.getPackage().getName())
+                                .log(Level.WARNING, format("Unrecognized connection property '%s'", propertyName));
+                //throw new SQLException(format("Unrecognized connection property '%s'", propertyName));
             }
         }
 
